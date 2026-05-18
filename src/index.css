@@ -1,0 +1,27 @@
+/* 기본 여백 제거 및 배경색 설정 */
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #e2e8f0; /* 모바일 화면 바깥쪽(데스크톱) 배경색 */
+  display: flex;
+  justify-content: center; /* 화면 가운데 정렬 */
+  height: 100vh;
+}
+
+#root {
+  width: 100%;
+  max-width: 480px; /* 딱 스마트폰 크기로 고정! */
+  background-color: #f8fafc; /* 앱 배경색 */
+  height: 100vh;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1); /* 앱 양옆에 그림자 효과 */
+  position: relative;
+}
+
+/* 🚀 마법의 코드: 기능은 놔두고 보기 싫은 스크롤바만 숨기기 */
+::-webkit-scrollbar {
+  display: none; /* 크롬, 사파리 등에서 스크롤바 숨김 */
+}
+* {
+  -ms-overflow-style: none; /* IE, 엣지에서 스크롤바 숨김 */
+  scrollbar-width: none; /* 파이어폭스에서 스크롤바 숨김 */
+}
