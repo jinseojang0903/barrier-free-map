@@ -1,16 +1,77 @@
-# React + Vite
+# 🏅 모두의 지도
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**참여형 배리어프리 로컬 플랫폼**의 프로토타입입니다. 동네 주민이 가게 입구의 턱이나 경사로, 인도 위에 방치된 공유 킥보드를 사진으로 제보하면 포인트와 배지를 받고, 모인 제보가 동네의 배리어프리 정보가 됩니다.
 
-Currently, two official plugins are available:
+공모전 제안서의 아이디어를 실제로 시연하기 위해 만든 MVP로, 경기도 양주시를 예시 지역으로 삼았습니다.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## 왜 만들었나
 
-## React Compiler
+휠체어나 유모차 이용자에게는 가게 입구의 턱 하나가 출입 여부를 결정합니다. 그런데 이런 정보는 지도 앱에 거의 없고, 행정 조사만으로는 골목 상권까지 채우기 어렵습니다.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+그래서 주민이 직접 사진으로 제보하고, 참여한 만큼 실질적인 보상을 받는 구조를 제안했습니다. 제보가 쌓일수록 지도가 채워지고, 보상이 다시 참여를 끌어내는 방식입니다.
 
-## Expanding the ESLint configuration
+## 주요 기능
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+| 화면 | 기능 |
+| --- | --- |
+| 홈 | 누적 포인트, 참여 가능한 로컬 퀘스트, 이웃들의 제보가 올라오는 실시간 동네 피드 |
+| 제보 | 휴대폰 카메라로 현장을 촬영해 제보. 제보하면 포인트가 적립되고 홈 피드 맨 위에 바로 표시 |
+| 마이 | 기여 배지, 보유 포인트, 포인트를 기프티콘으로 바꾸는 리워드 상점 |
+| 지도 (화면 연결 전) | 카카오맵 위에 배리어프리 장소를 표시하고 휠체어 접근, 점자 메뉴판, 안내견 동반, 장애인 주차장 조건으로 필터링 |
+
+**로컬 퀘스트 예시**
+
+- 가게 앞 턱·경사로 사진 제보 (+500P)
+- 인도 위 방치된 공유 킥보드 신고 (+200P)
+
+## 구현 범위
+
+아이디어 시연이 목적인 프로토타입이라 다음과 같은 한계가 있습니다.
+
+- 서버와 DB 없이 프론트엔드만으로 동작합니다. 퀘스트, 배지, 쿠폰, 장소는 모두 예시 데이터입니다.
+- 제보한 사진과 포인트는 브라우저 메모리에만 있어서 새로고침하면 초기화됩니다.
+- 로그인 기능은 없습니다.
+- 지도와 필터는 컴포넌트(`Map.jsx`, `FilterBar.jsx`)로 구현돼 있지만, 아직 화면에 연결하지 않았습니다.
+
+## 기술 스택
+
+| 구분 | 기술 |
+| --- | --- |
+| Frontend | React, React Router |
+| Build | Vite |
+| 지도 | Kakao Maps JavaScript SDK |
+| 배포 설정 | Vercel |
+
+## 프로젝트 구조
+
+```
+barrier-free-map/
+├── index.html              # 카카오맵 SDK 로드
+├── vercel.json             # SPA 라우팅 설정
+└── src/
+    ├── App.jsx             # 라우팅, 하단 내비게이션, 피드 상태 관리
+    ├── pages/
+    │   ├── Home.jsx        # 포인트, 로컬 퀘스트, 동네 피드
+    │   ├── Report.jsx      # 사진 촬영과 제보
+    │   └── Profile.jsx     # 배지, 리워드 상점
+    └── components/
+        ├── Map.jsx         # 카카오맵, 장소 마커
+        └── FilterBar.jsx   # 편의시설 필터
+```
+
+## 실행 방법
+
+[Kakao Developers](https://developers.kakao.com/)에서 JavaScript 키를 발급받고, 플랫폼에 `http://localhost:5173`을 등록합니다.
+
+프로젝트 최상위에 `.env` 파일을 만들고 키를 넣습니다.
+
+```
+VITE_KAKAO_API=발급받은_JavaScript_키
+```
+
+```bash
+npm install
+npm run dev
+```
+
+`http://localhost:5173`에서 열립니다. 모바일 화면에 맞춰 만들었기 때문에 브라우저 개발자 도구의 모바일 보기로 확인하는 것을 권장합니다.
